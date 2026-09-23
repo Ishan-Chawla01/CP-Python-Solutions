@@ -1,22 +1,22 @@
+#Incorrect solution earlier, cause it's a 4 step process not 2 step, and also, the jumps do not alternate
 import sys
 ans=[]
 for x in range(int(input())):
     x0,n=map(int,sys.stdin.readline().split())
     #If starting position is even, it moves to start-n//2 steps after n number of jumps where n is even
-    # If starting position is odd, it moves to start+n//2 steps after n numer of jumps where n is even
-    n_ini=n
-    Is_odd=False
-    if n%2!=0:
-        Is_odd=True
-        n-=1
-    if x0%2==0:
-        x0=x0-(n//2)
+    # If starting position is odd, it moves to start+n//2 steps after n number of jumps where n is even
+    n0=0
+    if n%4==0:
+        n0=0
+    elif n%4==1:
+        n0=-n
+    elif n%4==2:
+        n0=1
     else:
-        x0=x0+(n//2)
-    if Is_odd:
-        if abs(x0)%2==0:
-            x0=x0-n_ini
-        else:
-            x0=x0+n_ini
-    ans.append(x0)
-print(ans)
+        n0=n+1
+
+    if x0%2==0:
+        ans.append(x0+n0)
+    else:
+        ans.append(x0-n0)
+print(*ans)
