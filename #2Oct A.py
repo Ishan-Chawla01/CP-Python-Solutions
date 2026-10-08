@@ -1,54 +1,52 @@
 import sys
 from collections import defaultdict
-
-input_data = sys.stdin.read().split()
-if input_data:
-    t = int(input_data[0])
-    vowels = {"a", "e", "i", "o", "u"}
-
-    for i in range(1, t + 1):
-        s = list(input_data[i])
-        n = len(s)
-
-        if n == 2:
-            if s[0] != s[-1]:
-                print("NO")
-            else:
-                print("YES")
-            continue
-
-        d = defaultdict(int)
-        for char in s:
-            d[char] += 1
-
-        odd_count = 0
-        odd_char = ""
-        for key, value in d.items():
-            if value % 2 != 0:
-                odd_count += 1
-                odd_char = key
-
-        if (n % 2 == 0 and odd_count > 0) or (n % 2 == 1 and odd_count > 1):
+for _ in range(int(input())):
+    s=list(sys.stdin.readline().strip())
+    d=defaultdict(int)
+    if len(s)==2:
+        if s[0]!=s[-1]:
             print("NO")
             continue
+    vowels={"a","e","i","o","u"}
+    for char in s:
+        d[char]+=1
+    odd_count=0
+    flag1=True
+    for key,value in d.items():
+        if value%2!=0:
+            odd_count+=1
+        if odd_count==2:
+            flag1=False
+            break
+        elif odd_count>0 and len(s)%2==0:
+            flag1=False
+            break
+    if not flag1:
+        print("NO")
+        continue
+    left,right=0,len(s)-1
+    flag=False
 
-        orig_vowels = [c for c in s if c in vowels]
-        orig_consonants = [c for c in s if c not in vowels]
-
-        left_half = []
-        counts = d.copy()
-        if odd_char:
-            counts[odd_char] -= 1
-
-        for char in sorted(counts.keys()):
-            left_half.extend([char] * (counts[char] // 2))
-
-        target_s = left_half + ([odd_char] if odd_char else []) + left_half[::-1]
-
-        target_vowels = [c for c in target_s if c in vowels]
-        target_consonants = [c for c in target_s if c not in vowels]
-
-        if target_vowels == orig_vowels and target_consonants == orig_consonants:
-            print("YES")
+    while left<=right:
+        #print(f"right {right}")
+        #print(f"left {left} right {right}")
+        if s[left]==s[right]:
+            left+=1;right-=1
+            continue
         else:
-            print("NO")
+            #print(f"left {left} right {right}")
+            if (s[left]==s[right-1]) and (s[right] in vowels or s[right-1] in vowels):
+                s[right],s[right-1]=s[right-1],s[right]
+            elif (s[left+1]==s[right]) and (s[left] in vowels or s[left+1] in vowels):
+                s[left],s[left+1]=s[left+1],s[left]
+            elif (s[left+1]==s[right-1]) and( (s[left] in vowels or s[left+1] in vowels) and (s[right] in vowels or s[right-1] in vowels)):
+                s[left],s[left+1]=s[left+1],s[left]
+                s[right],s[right-1]=s[right-1],s[right]
+            else:
+                print("NO")
+                flag=True
+                break
+            left+=1;right-=1
+    if not flag:
+        print("YES")
+    
