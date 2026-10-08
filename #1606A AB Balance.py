@@ -14,7 +14,7 @@ for x in range(int(input())):
     for i in range(len(s)-1):
         #Writing logic here if ab>ba, then then and there break the thing
         if count_ab>count_ba:
-            s[i]="b" #Notice why can't we change i > cause it can make ab, before at i-1 and i if you change it to b
+            s[i]="b" #Notice why can't we change i+1 > cause it can make ab, after at i and i+1 if you change it to a and that can violate the minimum condition asked by the problem
             count_ab-=1
         elif count_ba>count_ab:
             s[i]="a"
