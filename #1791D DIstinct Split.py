@@ -1,25 +1,26 @@
-#Done by self
 import sys
-from collections import defaultdict
-for _ in range(int(input())):
-    n=int(sys.stdin.readline())
-    s=sys.stdin.readline().strip()
-    freq_a=defaultdict(int)
-    a=""
-    b=""
-    ans=set();ans1=set()
-    for idx,char in enumerate(s):
-        freq_a[char]+=1
-        if freq_a[char]<2:
-            a=a+char
+from collections import Counter
+input = lambda: sys.stdin.readline().rstrip("\r\n")
+ 
+ 
+def solve():
+    n=int(input())
+    s=input()
+    c=Counter(s)
+    right,left=0,0
+    ans=0;summ=0
+    right=len(c.keys())
+    c1={}
+    for char in s:
+        c[char]-=1
+        if char in c1: c1[char]+=1
+        else: c1[char]=1
+        if c[char]>0:
+            summ=len(c1.keys())+right
         else:
-            b=s[idx::]
-            #print(b)
-            break
-    for char in a:
-        if char not in ans:
-            ans.add(char)
-    for char in b:
-        if char not in ans1:
-            ans1.add(char)
-    print(len(ans)+len(ans1))
+            summ=len(c1.keys())+right-1
+            right-=1 # Got this after AI's hint
+        ans=max(ans,summ)
+    print(ans)
+for _ in range(int(input())):
+    solve()
