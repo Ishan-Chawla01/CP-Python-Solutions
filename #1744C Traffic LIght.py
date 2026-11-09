@@ -9,24 +9,15 @@ def solve():
     s=sys.stdin.readline().strip()
     ans=0
     carr=[idx for idx,char in enumerate(s) if char==c]
+    garr=[idx for idx,char in enumerate(s) if char=="g"]
+    last_g=-1
     s=s+s
-    for idx in carr:
-        start=idx;str=idx;end=(n-1)*2;e=(n-1)*2;mid=(start+end)//2;m=(start+end)//2
-        while start<end:
-            if s[mid]!="g":
-                start=mid+1
-            else:
-                break
-        if s[mid]=="g":
-            ans=max(ans,mid-idx)
-        while str<e:
-            if s[m]!="g":
-                e=m-1
-            else:
-                break
-        if s[m]=="g":
-            ans=max(ans,m-idx)
-        
+    for i in range((n-1)*2,-1,-1):
+        if s[i]=="g":
+            last_g=i
+        elif s[i]==c:
+            ans=max(ans,last_g-i)
+    s=s+s
     print(ans)
 
 
